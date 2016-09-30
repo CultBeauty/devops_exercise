@@ -1,0 +1,59 @@
+server {
+
+        listen 80 default_server;
+        listen [::]:80 default_server ipv6only=on;
+
+        root /usr/share/nginx/html;
+	index index.html index.htm;
+
+
+        # Make site accessible from http://localhost/
+        server_name localhost;
+
+        location / {
+                # First attempt to serve request as file, then
+                # as directory, then fall back to displaying a 404.
+                try_files $uri $uri/ =404;
+                # Uncomment to enable naxsi on this location
+                # include /etc/nginx/naxsi.rules
+        }
+
+
+
+        # redirect erros to the same page
+        error_page 401 402 403 404 500 501 502 503 504 /error.html;
+        location = /error.html {
+                root /vagrant/application/;
+                internal;
+        }
+
+        location /dog {
+            root /vagrant/application/;
+
+            fastcgi_param REQUEST_METHOD $request_method;
+	    fastcgi_param REQUEST_URI "/show";
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_index index.php;
+            fastcgi_pass unix:/var/run/php5-fpm.sock;
+        }
+
+	location /cat {
+            root /vagrant/application/;
+	    proxy_pass http://localhost:3000/show;
+	}
+
+	location /goat {
+            root /vagrant/application/;
+	    proxy_pass http://localhost:9000/show;
+	}
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+}
