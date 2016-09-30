@@ -3,7 +3,8 @@
 This is a simple (and hopefully fun) exercise, used to evaluate your ability to set
 up a basic server environment, running a number of applications across a set
 of technologies. Your solution must come in the form of a **Vagrant** VM (see below for
-requirements) - just fork this repository and build on top of it.
+requirements). You can just build on top of this repository, but please don't fork it,
+as this will make your solution publicly visible from this repo to everyone!
 
 This repo includes three web services under `/application`:
 
