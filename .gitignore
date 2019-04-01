@@ -1,3 +1,6 @@
 .vagrant
 Vagrantfile
 setup.sh
+Dockerfile
+*.log
+*.conf
